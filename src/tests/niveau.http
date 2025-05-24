@@ -1,0 +1,5 @@
+### Afficher tous les niveaux
+GET https://localhost:3000/api_niveaux
+Accept: application/json
+
+###

@@ -1,0 +1,5 @@
+### Afficher toutes les classes
+GET https://localhost:3000/api_classes
+Accept: application/json
+
+###

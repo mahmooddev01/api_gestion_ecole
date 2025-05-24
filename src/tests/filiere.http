@@ -1,0 +1,8 @@
+### Afficher toutes les filieres
+GET http://localhost:8080/api/filieres
+Accept: application/json
+
+### Afficher une filiere par ID
+GET http://localhost:8080/api/filieres/2
+Accept: application/json
+

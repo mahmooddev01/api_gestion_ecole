@@ -1,0 +1,85 @@
+{
+  "filieres": [
+    {
+      "id": 1,
+      "libelle": "DWM"
+    },
+    {
+      "id": 2,
+      "libelle": "GL"
+    }
+  ],
+  "niveaux": [
+    {
+      "id": 1,
+      "libelle": "L1"
+    },
+    {
+      "id": 2,
+      "libelle": "L2"
+    },
+    {
+      "id": 3,
+      "libelle": "L3"
+    }
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "libelle": "L1 DWM",
+      "filiereId": 1,
+      "niveauId": 1
+    },
+    {
+      "id": 2,
+      "libelle": "L2 GL",
+      "filiereId": 2,
+      "niveauId": 2
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "libelle": "Algo"
+    }
+  ],
+  "cours": [
+    {
+      "id": 1,
+      "dateCours": "2024-08-17T10:00:00Z",
+      "duree": 120,
+      "moduleId": 1,
+      "classeId": 1
+    }
+  ],
+  "etudiants": [
+    {
+      "id": 1,
+      "nomComplet": "Mamadou Ndiaye",
+      "matricule": "ETU001",
+      "adresse": "Dakar",
+      "login": "mndiaye",
+      "password": "passer123",
+      "classeId": 1
+    },
+    {
+      "id": 2,
+      "nomComplet": "Fatou Diop",
+      "matricule": "ETU002",
+      "adresse": "Thiès",
+      "login": "ftdiop@gmail.com",
+      "password": "passer123",
+      "classeId": 2
+    },
+    {
+      "id": 3,
+      "nomComplet": "Ibrahima Sarr",
+      "matricule": "ETU003",
+      "adresse": "Saint-Louis",
+      "login": "ibsarr@gmail.com",
+      "password": "passer123",
+      "classeId": 1
+    }
+  ]
+
+}
