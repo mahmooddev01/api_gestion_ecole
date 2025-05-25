@@ -6,3 +6,22 @@ Accept: application/json
 GET http://localhost:8080/api/filieres/2
 Accept: application/json
 
+### Ajouter une filiere
+POST http://localhost:8080/api/filieres
+content-type: application/json
+
+{
+  "libelle": "DN"
+}
+
+### Modifier une filiere existante
+PUT http://localhost:8080/api/filieres/4
+content-type: application/json
+
+{
+  "libelle": "MCD"
+}
+
+### Supprimer une filiere existante
+DELETE http://localhost:8080/api/filieres/4
+Accept: application/json

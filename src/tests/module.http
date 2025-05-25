@@ -1,1 +1,15 @@
-### Afficher tous les module
+### Afficher tous les modules
+GET http://localhost:8080/api/modules
+Accept: application/json
+
+### Afficher un module par ID
+GET http://localhost:8080/api/modules/2
+Accept: application/json
+
+### Ajouter un module
+
+
+### Modifier un module existant
+
+
+### Supprimer un module existant

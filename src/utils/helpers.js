@@ -14,11 +14,17 @@ export function readData() {
     return JSON.parse(data);
 }
 
+export function writeData(tab) {
+    fs.writeFileSync(dataPath, JSON.stringify(tab, null, 2));
+}
+
 export function readTable(table) {
     const db = readData();
     return db[table] || [];
 }
 
-export function writeData(tab) {
-    fs.writeFileSync(dataPath, JSON.stringify(tab, null, 2));
+export function writeTable(tab, updatedtab) {
+    const db = readData();
+    db[tab] = updatedtab;
+    writeData(db);
 }

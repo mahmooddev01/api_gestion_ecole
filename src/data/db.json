@@ -7,6 +7,14 @@
     {
       "id": 2,
       "libelle": "GL"
+    },
+    {
+      "id": 3,
+      "libelle": "DN"
+    },
+    {
+      "id": 4,
+      "libelle": "MCD"
     }
   ],
   "niveaux": [
@@ -55,8 +63,8 @@
   "etudiants": [
     {
       "id": 1,
-      "nomComplet": "Mamadou Ndiaye",
       "matricule": "ETU001",
+      "nomComplet": "Mamadou Ndiaye",
       "adresse": "Dakar",
       "login": "mndiaye",
       "password": "passer123",
@@ -64,8 +72,8 @@
     },
     {
       "id": 2,
-      "nomComplet": "Fatou Diop",
       "matricule": "ETU002",
+      "nomComplet": "Fatou Diop",
       "adresse": "Thiès",
       "login": "ftdiop@gmail.com",
       "password": "passer123",
@@ -81,5 +89,4 @@
       "classeId": 1
     }
   ]
-
 }

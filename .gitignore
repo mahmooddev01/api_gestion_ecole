@@ -1,2 +1,15 @@
-.idea
-node_modules
+# Ignorer les dépendances Node.js
+node_modules/
+
+# Ignorer les fichiers de config WebStorm
+.idea/
+
+# Ignorer les fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Autres fichiers sensibles
+.env
