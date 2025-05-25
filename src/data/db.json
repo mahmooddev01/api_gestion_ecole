@@ -11,10 +11,6 @@
     {
       "id": 3,
       "libelle": "DN"
-    },
-    {
-      "id": 4,
-      "libelle": "MCD"
     }
   ],
   "niveaux": [
@@ -49,6 +45,22 @@
     {
       "id": 1,
       "libelle": "Algo"
+    },
+    {
+      "id": 2,
+      "libelle": "Java"
+    },
+    {
+      "id": 3,
+      "libelle": "JavaScript"
+    },
+    {
+      "id": 4,
+      "libelle": "TS"
+    },
+    {
+      "id": 5,
+      "libelle": "Python"
     }
   ],
   "cours": [

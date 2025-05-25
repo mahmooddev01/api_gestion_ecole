@@ -3,13 +3,25 @@ GET http://localhost:8080/api/modules
 Accept: application/json
 
 ### Afficher un module par ID
-GET http://localhost:8080/api/modules/2
+GET http://localhost:8080/api/modules/1
 Accept: application/json
 
 ### Ajouter un module
+POST http://localhost:8080/api/modules
+content-type: application/json
 
+{
+  "libelle": "Python"
+}
 
 ### Modifier un module existant
+PUT http://localhost:8080/api/modules/6
+content-type: application/json
 
+{
+  "libelle": "MongoDB"
+}
 
 ### Supprimer un module existant
+DELETE http://localhost:8080/api/modules/6
+Accept: application/json
