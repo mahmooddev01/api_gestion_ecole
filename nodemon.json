@@ -1,6 +1,6 @@
 {
   "watch": ["controllers", "routes", "tests", "app.js"],
-  "ext": "js, json",
-  "ignore": ["/data/db.json"],
+  "ext": "js,json,http",
+  "ignore": ["data/db.json"],
   "exec": "node app.js"
 }

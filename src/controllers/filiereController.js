@@ -10,7 +10,6 @@ const getAllFilieres = (req, res) => {
 const getFiliereById = (req, res) => {
     const filieres = readTable('filieres');
     const idF = parseInt(req.params.id);
-
     const filiere = filieres.find(f => f.id === idF);
 
     if (!filiere) {

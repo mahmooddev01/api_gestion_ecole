@@ -1,5 +1,5 @@
 ### Afficher tous les cours
-GET https://localhost:3000/api_cours
+GET https://localhost:8080/api/cours
 Accept: application/json
 
 ###

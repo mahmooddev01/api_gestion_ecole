@@ -31,14 +31,14 @@
     {
       "id": 1,
       "libelle": "L1 DWM",
-      "filiereId": 1,
-      "niveauId": 1
+      "niveauId": 1,
+      "filiereId": 1
     },
     {
       "id": 2,
       "libelle": "L2 GL",
-      "filiereId": 2,
-      "niveauId": 2
+      "niveauId": 2,
+      "filiereId": 2
     }
   ],
   "modules": [
