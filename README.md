@@ -25,9 +25,9 @@ Cette API a pour objectif de gérer les différentes entités académiques d'un 
 - [x] Ajouter, modifier et supprimer un module
 
 ### 🔹 Cours
-- [ ] Ajouter un cours
-- [ ] Lister tous les cours
-- [ ] Lier un cours à une classe, un module et un niveau
+- [x] Ajouter un cours
+- [x] Lister tous les cours
+- [x] Lier un cours à une classe, un module et un niveau
 
 ---
 
@@ -72,7 +72,7 @@ Le serveur sera accessible à l’adresse :
 ### ▶️ Ajouter une classe
 
 ```http
-POST /api/classes
+POST http://localhost:8080/api/classes
 Content-Type: application/json
 
 {
@@ -85,7 +85,7 @@ Content-Type: application/json
 ### 🔄 Modifier une classe
 
 ```http
-PUT /api/classes/4
+PUT http://localhost:8080/api/classes/4
 Content-Type: application/json
 
 {
@@ -99,17 +99,17 @@ Content-Type: application/json
 
 ## 📌 Routes principales
 
-| Ressource | Méthode | URL                          | Description                     |
-|-----------|---------|------------------------------|---------------------------------|
-| Classes   | GET     | `/api/classes`               | Lister toutes les classes       |
-| Classes   | GET     | `/api/classes/:id`           | Obtenir une classe              |
-| Classes   | POST    | `/api/classes`               | Créer une classe                |
-| Classes   | PUT     | `/api/classes/:id`           | Modifier une classe             |
-| Classes   | DELETE  | `/api/classes/:id`           | Supprimer une classe            |
-| Filières  | idem    | `/api/filieres...`           | Même principe                   |
-| Niveaux   | idem    | `/api/niveaux...`            |                                 |
-| Modules   | idem    | `/api/modules...`            |                                 |
-| Cours     | en cours| `/api/cours...`              | À venir                         |
+| Ressource | Méthode | URL                          | Description                   |
+|-----------|---------|------------------------------|-------------------------------|
+| Classes   | GET     | `/api/classes`               | Lister toutes les classes     |
+| Classes   | GET     | `/api/classes/:id`           | Obtenir une classe            |
+| Classes   | POST    | `/api/classes`               | Créer une classe              |
+| Classes   | PUT     | `/api/classes/:id`           | Modifier une classe           |
+| Classes   | DELETE  | `/api/classes/:id`           | Supprimer une classe          |
+| Filières  | idem    | `/api/filieres...`           | Même principe                 |
+| Niveaux   | idem    | `/api/niveaux...`            | Même principe                     |
+| Modules   | idem    | `/api/modules...`            | Même principe                              |
+| Cours     | en cours| `/api/cours...`              | Même principe                         |
 
 ---
 

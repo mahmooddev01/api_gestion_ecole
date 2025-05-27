@@ -70,6 +70,13 @@
       "duree": 120,
       "moduleId": 1,
       "classeId": 1
+    },
+    {
+      "id": 2,
+      "dateCours": "2024-08-17T10:00:00.000Z",
+      "duree": 180,
+      "classeId": 2,
+      "moduleId": 2
     }
   ],
   "etudiants": [
