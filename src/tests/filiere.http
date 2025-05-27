@@ -8,7 +8,7 @@ Accept: application/json
 
 ### Ajouter une filiere
 POST http://localhost:8080/api/filieres
-content-type: application/json
+Content-Type: application/json
 
 {
   "libelle": "DN"
@@ -16,7 +16,7 @@ content-type: application/json
 
 ### Modifier une filiere existante
 PUT http://localhost:8080/api/filieres/4
-content-type: application/json
+Content-Type: application/json
 
 {
   "libelle": "MCD"

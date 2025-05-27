@@ -8,7 +8,7 @@ Accept: application/json
 
 ### Ajouter un niveau
 POST http://localhost:8080/api/niveaux
-content-type: application/json
+Content-Type: application/json
 
 {
   "libelle": "M1"
@@ -16,7 +16,7 @@ content-type: application/json
 
 ### Modifier un niveau existant
 PUT http://localhost:8080/api/niveaux/4
-content-type: application/json
+Content-Type: application/json
 
 {
   "libelle": "M2"

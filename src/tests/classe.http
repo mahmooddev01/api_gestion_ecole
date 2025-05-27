@@ -8,7 +8,7 @@ Accept: application/json
 
 ### Ajouter une classe
 POST http://localhost:8080/api/classes
-content-type: application/json
+Content-Type: application/json
 
 {
   "libelle": "L2 DWM",
@@ -18,7 +18,7 @@ content-type: application/json
 
 ### Mettre à jour une classe existante
 PUT http://localhost:8080/api/classes/3
-content-type: application/json
+Content-Type: application/json
 
 {
     "libelle": "L1 DN",
