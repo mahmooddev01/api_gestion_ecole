@@ -102,17 +102,18 @@ Content-Type: application/json
 
 ## 📌 Routes principales
 
-| Ressource | Méthode | URL                          | Description                   |
-|-----------|---------|------------------------------|-------------------------------|
-| Classes   | GET     | `/api/classes`               | Lister toutes les classes     |
-| Classes   | GET     | `/api/classes/:id`           | Obtenir une classe            |
-| Classes   | POST    | `/api/classes`               | Créer une classe              |
-| Classes   | PUT     | `/api/classes/:id`           | Modifier une classe           |
-| Classes   | DELETE  | `/api/classes/:id`           | Supprimer une classe          |
-| Filières  | idem    | `/api/filieres...`           | Même principe                 |
-| Niveaux   | idem    | `/api/niveaux...`            | Même principe                     |
-| Modules   | idem    | `/api/modules...`            | Même principe                              |
-| Cours     | en cours| `/api/cours...`              | Même principe                         |
+| Ressource | Méthode | URL                 | Description                   |
+|-----------|---------|---------------------|-------------------------------|
+| Classes   | GET     | `/api/classes`      | Lister toutes les classes     |
+| Classes   | GET     | `/api/classes/:id`  | Obtenir une classe            |
+| Classes   | POST    | `/api/classes`      | Créer une classe              |
+| Classes   | PUT     | `/api/classes/:id`  | Modifier une classe           |
+| Classes   | DELETE  | `/api/classes/:id`  | Supprimer une classe          |
+| Filières  | idem    | `/api/filieres...`  | Même principe                 |
+| Niveaux   | idem    | `/api/niveaux...`   | Même principe                 |
+| Modules   | idem    | `/api/modules...`   | Même principe                 |
+| Etudiants | idem    | `/api/etudiants...` | Même principe                 |
+| Cours     | idem    | `/api/cours...`     | Même principe                 |
 
 ---
 
