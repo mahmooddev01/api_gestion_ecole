@@ -59,7 +59,7 @@ Cette API a pour objectif de gérer les différentes entités académiques d'un 
 
 ```bash
 npm install
-npm run dev   # ou nodemon app.js
+npm start   # ou npx nodemon app.js
 ```
 
 Le serveur sera accessible à l’adresse :  
