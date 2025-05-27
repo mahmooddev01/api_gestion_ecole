@@ -24,10 +24,13 @@ Cette API a pour objectif de gérer les différentes entités académiques d'un 
 - [x] Liste des modules
 - [x] Ajouter, modifier et supprimer un module
 
+### 🔹 Etudiants
+- [x] Lister tous les étudiants
+- [x] Ajouter, modifier et supprimer un étudiant
+
 ### 🔹 Cours
-- [x] Ajouter un cours
 - [x] Lister tous les cours
-- [x] Lier un cours à une classe, un module et un niveau
+- [x] Ajouter, modifier et supprimer un cours
 
 ---
 
