@@ -1,4 +1,5 @@
 import {readTable, writeTable} from "../utils/helpers.js";
+import {validateAndCheckForeignKeys} from "../utils/validator.js";
 
 
 // GET ALL
@@ -24,9 +25,13 @@ const createEtudiant = (req, res) => {
     try {
         const { nomComplet, matricule, adresse, login, password, classeId } = req.body;
 
-        if (!nomComplet || !matricule || !adresse || !login || !password || !classeId) {
-            return res.status(400).json({message: 'Veuillez renseigner tous les champs'});
-        }
+        const result = validateAndCheckForeignKeys(req.body,
+            ["nomComplet", "matricule", "adresse", "login", "password", "classeId"],
+            [
+                { table: 'classes', id: classeId, label: 'Classe' }
+                ]
+        )
+
         const etudiants = readTable('etudiants');
         const id = etudiants.length > 0 ? Math.max(...etudiants.map(etu => etu.id)) + 1 : 1;
 
@@ -52,9 +57,14 @@ const updateEtudiant = (req, res) => {
     }
 
     const {nomComplet, matricule, adresse, login, password, classeId} = req.body;
-    if (!nomComplet || !matricule || !adresse || !login || !password || !classeId) {
-        return res.status(400).json({message: 'Veuillez renseigner tous les champs'});
-    }
+
+    const result = validateAndCheckForeignKeys(req.body,
+        ["nomComplet", "matricule", "adresse", "login", "password", "classeId"],
+        [
+            { table: 'classes', id: classeId, label: 'Classe' }
+            ]
+    )
+
     etudiants[index] = {id, nomComplet, matricule, adresse, login, password, classeId};
     writeTable('etudiants', etudiants);
     res.status(200).json(etudiants[index]);

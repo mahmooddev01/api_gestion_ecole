@@ -28,3 +28,13 @@ export function writeTable(tab, updatedtab) {
     db[tab] = updatedtab;
     writeData(db);
 }
+
+export const keyExist = (table, id) => {
+    const list = readTable(table);
+    return list.some(item => item.id === id);
+};
+
+export const generateId = (tableName) => {
+    const data = readTable(tableName);
+    return data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
+};

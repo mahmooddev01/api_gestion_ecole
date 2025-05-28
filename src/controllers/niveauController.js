@@ -1,4 +1,5 @@
-import {readTable, writeTable} from "../utils/helpers.js";
+import {generateId, readTable, writeTable} from "../utils/helpers.js";
+import {validatePayload} from "../utils/validator.js";
 
 // GET ALL
 const getAllNiveaux = (req, res) => {
@@ -21,11 +22,10 @@ const getNiveauById = (req, res) => {
 const createNiveau = (req, res) => {
     try {
         const { libelle } = req.body;
-        if (!libelle) {
-            return res.status(400).json({ message: 'Veuillez renseigner le libellé' });
-        }
+        const result = validatePayload(req.body,["libelle"]);
+
         const niveaux = readTable('niveaux');
-        const id = niveaux.length > 0 ? Math.max(...niveaux.map(n => n.id)) + 1 : 1;
+        const id = generateId('niveaux');
 
         const newNiveau = { id, libelle };
         niveaux.push(newNiveau);
@@ -47,9 +47,8 @@ const updateNiveau = (req, res) => {
         return res.status(404).json({ message: 'Niveau non trouvé' });
     }
     const { libelle } = req.body;
-    if (!libelle) {
-        return res.status(400).json({ message: 'Veuillez renseigner le libellé' });
-    }
+    const result = validatePayload(req.body,["libelle"]);
+
     niveaux[index].libelle = libelle;
     writeTable('niveaux', niveaux);
     res.status(200).json(niveaux[index]);

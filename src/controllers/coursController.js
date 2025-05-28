@@ -1,4 +1,5 @@
-import {readTable, writeTable} from "../utils/helpers.js";
+import {generateId, readTable, writeTable} from "../utils/helpers.js";
+import {validateAndCheckForeignKeys} from "../utils/validator.js";
 
 // GET ALL
 const getAllCours = (req, res) => {
@@ -23,14 +24,18 @@ const createCours = (req, res) => {
     try {
         let { dateCours, duree, classeId, moduleId } = req.body;
 
-        if (!dateCours || !duree || !classeId || !moduleId) {
-            return res.status(400).json({message: 'Veuillez renseigner tous les champs'});
-        }
+        const result = validateAndCheckForeignKeys(req.body,
+            ["dateCours", "duree", "classeId", "moduleId"],
+            [
+                { table: 'classes', id: classeId, label: 'Classe' },
+                { table: 'modules', id: moduleId, label: 'Module' }
+                ]
+        )
 
         dateCours = new Date(dateCours).toISOString();
 
         const cours = readTable('cours');
-        const id = cours.length > 0 ? Math.max(...cours.map(c => c.id)) + 1 : 1;
+        const id = generateId('cours');
         const newCours = { id, dateCours, duree, classeId, moduleId };
         cours.push(newCours);
         writeTable('cours', cours);
@@ -53,9 +58,13 @@ const updateCours = (req, res) => {
     }
 
     let { dateCours, duree, classeId, moduleId } = req.body;
-    if (!dateCours || !duree || !classeId || !moduleId) {
-        return res.status(400).json({message: 'Veuillez renseigner tous les champs'});
-    }
+    const result = validateAndCheckForeignKeys(req.body,
+        ["dateCours", "duree", "classeId", "moduleId"],
+        [
+            { table: 'classes', id: classeId, label: 'Classe' },
+            { table: 'modules', id: moduleId, label: 'Module' }
+            ]
+    )
 
     dateCours = new Date(dateCours).toISOString();
 

@@ -1,4 +1,5 @@
-import {readTable, writeTable} from "../utils/helpers.js";
+import {generateId, readTable, writeTable} from "../utils/helpers.js";
+import {validatePayload} from "../utils/validator.js";
 
 // GET ALL
 const getAllFilieres = (req, res) => {
@@ -23,11 +24,10 @@ const getFiliereById = (req, res) => {
 const createFiliere = (req, res) => {
     try {
         const { libelle } = req.body;
-        if (!libelle) {
-            return res.status(400).json({ message: 'Veuillez renseigner le libellé' });
-        }
+        const result = validatePayload(req.body,["libelle"])
+
         const filieres = readTable('filieres');
-        const id = filieres.length > 0 ? Math.max(...filieres.map(f => f.id)) + 1 : 1;
+        const id = generateId('filieres');
 
         const newFiliere = { id, libelle };
         filieres.push(newFiliere);
@@ -51,9 +51,8 @@ const updateFiliere = (req, res) => {
     }
 
     const { libelle } = req.body;
-    if (!libelle) {
-        return res.status(400).json({ message: 'Veuillez renseigner le libellé' });
-    }
+    const result = validatePayload(req.body,["libelle"])
+
     filieres[index].libelle = libelle;
     writeTable('filieres', filieres);
     res.status(200).json(filieres[index]);

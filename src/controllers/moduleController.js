@@ -1,5 +1,6 @@
 // GET ALL
-import {readTable, writeTable} from "../utils/helpers.js";
+import {generateId, readTable, writeTable} from "../utils/helpers.js";
+import {validatePayload} from "../utils/validator.js";
 
 const getAllModules = (req, res) => {
     const modules = readTable('modules');
@@ -23,11 +24,10 @@ const getModuleById = (req, res) => {
 const createModule = (req, res) => {
     try {
         const {libelle} = req.body;
-        if (!libelle) {
-            return res.status(400).json({message: 'Veuillez renseigner le libellé'});
-        }
+        const result = validatePayload(req.body,["libelle"]);
+
         const modules = readTable('modules');
-        const id = modules.length > 0 ? Math.max(...modules.map(m => m.id)) + 1 : 1;
+        const id = generateId('modules');
         const newModule = {id, libelle};
         modules.push(newModule);
         writeTable('modules', modules);
@@ -48,9 +48,8 @@ const updateModule = (req, res) => {
         res.status(404).json({message: 'Module non trouvé'});
     }
     const {libelle} = req.body;
-    if (!libelle) {
-        return res.status(400).json({message: 'Veuillez renseigner le libellé'});
-    }
+    const result = validatePayload(req.body,["libelle"]);
+
     modules[index].libelle = libelle;
     writeTable('modules', modules);
     res.status(200).json(modules[index]);

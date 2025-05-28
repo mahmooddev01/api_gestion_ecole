@@ -1,5 +1,6 @@
 // GET ALL
-import {readTable, writeTable} from "../utils/helpers.js";
+import {generateId, keyExist, readTable, writeTable} from "../utils/helpers.js";
+import {checkForeignKeysExist, validateAndCheckForeignKeys, validatePayload} from "../utils/validator.js";
 
 const getAllClasses = (req, res) => {
     const classes = readTable('classes');
@@ -23,13 +24,17 @@ const getClassById = (req, res) => {
 const createClasse = (req, res) => {
     try {
         const { libelle, niveauId, filiereId } = req.body;
-
-        if (!libelle || !niveauId || !filiereId) {
-            return res.status(400).json({ message: "Veuillez renseigner tous les champs" });
-        }
+        // Vérification de la validité des champs et de leur existence
+        const result = validateAndCheckForeignKeys(req.body,
+            ["libelle", "niveauId", "filiereId"],
+            [
+                { table: 'filieres', id: filiereId, label: 'Filière' },
+                { table: 'niveaux', id: niveauId, label: 'Niveau' }
+                ]
+        );
 
         const classes = readTable('classes');
-        const id = classes.length > 0 ? Math.max(...classes.map(c => c.id)) + 1 : 1;
+        const id = generateId('classes');
 
         const newClasse = {id, libelle, niveauId, filiereId};
         classes.push(newClasse);
@@ -52,10 +57,16 @@ const updateClasse = (req, res) => {
         return res.status(400).json({ message: "Classe non trouvée" });
     }
 
-    const {libelle, niveauId, filiereId} = req.body;
-    if (!libelle || !niveauId || !filiereId) {
-        return res.status(400).json({ message: "Veuillez renseigner tous les champs" });
-    }
+    const { libelle, niveauId, filiereId } = req.body;
+    // Vérification de la validité des champs et de leur existence
+    const result = validateAndCheckForeignKeys(req.body,
+        ["libelle", "niveauId", "filiereId"],
+        [
+            { table: 'filieres', id: filiereId, label: 'Filière' },
+            { table: 'niveaux', id: niveauId, label: 'Niveau' }
+            ]
+        )
+
     classes[index] = {id, libelle, niveauId, filiereId};
     writeTable('classes', classes);
     res.status(200).json(classes[index]);
