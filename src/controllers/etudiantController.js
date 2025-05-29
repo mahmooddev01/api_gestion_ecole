@@ -1,24 +1,10 @@
 import {readTable, writeTable} from "../utils/helpers.js";
 import {validateAndCheckForeignKeys} from "../utils/validator.js";
+import {baseController} from "./baseController.js";
 
 
-// GET ALL
-const getAllEtudiants = (req, res) => {
-    const etudiants = readTable('etudiants');
-    res.status(200).json(etudiants);
-}
-
-// GET BY ID
-const getEtudiantById = (req, res) => {
-    const etudiants = readTable('etudiants');
-    const idE = parseInt(req.params.id);
-    const etudiant = etudiants.find(etu => etu.id === idE)
-    if (!etudiant) {
-        return res.status(404).json({message: 'Etudiant non trouvé'});
-    }
-
-    res.status(200).json(etudiant);
-}
+// GET ALL, GET BY ID, DELETE
+const { getAll, getById, delete: remove } = baseController('etudiants');
 
 // CREATE
 const createEtudiant = (req, res) => {
@@ -70,28 +56,11 @@ const updateEtudiant = (req, res) => {
     res.status(200).json(etudiants[index]);
 }
 
-// DELETE
-const deleteEtudiant = (req, res) => {
-    const etudiants = readTable('etudiants');
-    const id = parseInt(req.params.id);
-    const index = etudiants.findIndex(etu => etu.id === id);
-    if (index === -1) {
-        return res.status(400).json({message: 'Etudiant non trouvé'});
-    }
-
-    const removedEtudiant = etudiants.splice(index, 1);
-    writeTable('etudiants', etudiants);
-    res.status(200).json({
-        message: 'Etudiant supprimé',
-        etudiant: removedEtudiant
-    })
-}
-
 
 export default {
-    getAllEtudiants,
-    getEtudiantById,
+    getAllEtudiants: getAll,
+    getEtudiantById: getById,
     createEtudiant,
     updateEtudiant,
-    deleteEtudiant,
+    deleteEtudiant: remove,
 }

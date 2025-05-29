@@ -1,23 +1,9 @@
 import {generateId, readTable, writeTable} from "../utils/helpers.js";
 import {validateAndCheckForeignKeys} from "../utils/validator.js";
+import {baseController} from "./baseController.js";
 
-// GET ALL
-const getAllCours = (req, res) => {
-    const cours = readTable('cours');
-    res.status(200).json(cours);
-}
-
-// GET BY ID
-const getCoursById = (req, res) => {
-    const cours = readTable('cours');
-    const idC = parseInt(req.params.id);
-    const cour = cours.find(c => c.id === idC);
-    if (!cour) {
-        return res.status(400).json({message: 'Cours non trouvé'});
-    }
-
-    res.status(200).json(cour);
-}
+// GET ALL, GET BY ID, DELETE
+const { getAll, getById, delete: remove } = baseController('cours');
 
 // CREATE
 const createCours = (req, res) => {
@@ -73,27 +59,11 @@ const updateCours = (req, res) => {
     res.status(200).json(cours[index]);
 }
 
-// DELETE
-const deleteCours = (req, res) => {
-    const cours = readTable('cours');
-    const id = parseInt(req.params.id);
-    const index = cours.findIndex(c => c.id === id);
-    if (index === -1) {
-        return res.status(400).json({message: 'Cours non trouvé'});
-    }
-    const removedCours = cours.splice(index, 1);
-    writeTable('cours', cours);
-    res.status(200).json({
-        message: 'Cours non trouvé',
-        cours: removedCours
-    });
-}
-
 
 export default {
-    getAllCours,
-    getCoursById,
+    getAllCours: getAll,
+    getCoursById: getById,
     createCours,
     updateCours,
-    deleteCours,
+    deleteCours: remove
 }

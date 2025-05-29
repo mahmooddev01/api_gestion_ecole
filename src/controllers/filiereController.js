@@ -1,24 +1,9 @@
 import {generateId, readTable, writeTable} from "../utils/helpers.js";
 import {validatePayload} from "../utils/validator.js";
+import {baseController} from "./baseController.js";
 
-// GET ALL
-const getAllFilieres = (req, res) => {
-    const filieres = readTable('filieres');
-    res.status(200).json(filieres);
-}
-
-// GET BY ID
-const getFiliereById = (req, res) => {
-    const filieres = readTable('filieres');
-    const idF = parseInt(req.params.id);
-    const filiere = filieres.find(f => f.id === idF);
-
-    if (!filiere) {
-        return res.status(404).json({ message: 'Filière non trouvée' });
-    }
-
-    res.status(200).json(filiere);
-};
+// GET ALL, GET BY ID, DELETE
+const { getAll, getById, delete: remove } = baseController('filieres');
 
 // CREATE
 const createFiliere = (req, res) => {
@@ -58,28 +43,11 @@ const updateFiliere = (req, res) => {
     res.status(200).json(filieres[index]);
 }
 
-// DELETE
-const deleteFiliere = (req, res) => {
-    const filieres = readTable('filieres');
-    const id = parseInt(req.params.id);
-    const index = filieres.findIndex(f => f.id === id);
-    if (index === -1) {
-        return res.status(404).json({ message: 'Filière non trouvée' });
-    }
-    const removedFiliere = filieres.splice(index, 1);
-    writeTable('filieres', filieres);
-
-    res.status(200).json({
-        message: 'Filière supprimée',
-        filiere: removedFiliere
-    });
-}
-
 
 export default {
-    getAllFilieres,
-    getFiliereById,
+    getAllFilieres: getAll,
+    getFiliereById: getById,
     createFiliere,
     updateFiliere,
-    deleteFiliere
+    deleteFiliere: remove
 };

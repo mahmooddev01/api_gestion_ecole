@@ -1,24 +1,10 @@
 // GET ALL
 import {generateId, readTable, writeTable} from "../utils/helpers.js";
 import {validatePayload} from "../utils/validator.js";
+import {baseController} from "./baseController.js";
 
-const getAllModules = (req, res) => {
-    const modules = readTable('modules');
-    res.status(200).json(modules);
-}
-
-// GET BY ID
-const getModuleById = (req, res) => {
-    const modules = readTable('modules');
-    const idM = parseInt(req.params.id);
-    const module = modules.find(m => m.id === idM);
-
-    if (!module) {
-        return res.status(404).json({message: 'Module non trouvé'});
-    }
-
-    res.status(200).json(module);
-}
+// GET ALL, GET BY ID
+const { getAll, getById, delete: remove } = baseController('modules');
 
 // CREATE
 const createModule = (req, res) => {
@@ -55,28 +41,12 @@ const updateModule = (req, res) => {
     res.status(200).json(modules[index]);
 }
 
-// DELETE
-const deleteModule = (req, res) => {
-    const modules = readTable('modules');
-    const idM = parseInt(req.params.id);
-    const index = modules.findIndex(f => f.id === idM);
-    if (index === -1) {
-        return res.status(404).json({message: 'Module non trouvé'});
-    }
 
-    const removedModule = modules.splice(index, 1);
-    writeTable('modules', modules);
-
-    res.status(200).json({
-        message: 'Module supprimé',
-        module: removedModule
-    })
-}
 
 export default {
-    getAllModules,
-    getModuleById,
+    getAllModules: getAll,
+    getModuleById: getById,
     createModule,
     updateModule,
-    deleteModule,
+    deleteModule: remove
 }

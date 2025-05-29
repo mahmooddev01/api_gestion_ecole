@@ -1,22 +1,9 @@
 import {generateId, readTable, writeTable} from "../utils/helpers.js";
 import {validatePayload} from "../utils/validator.js";
+import {baseController} from "./baseController.js";
 
-// GET ALL
-const getAllNiveaux = (req, res) => {
-    const niveaux = readTable('niveaux');
-    res.status(200).json(niveaux);
-}
-
-// GET BY ID
-const getNiveauById = (req, res) => {
-    const niveaux = readTable('niveaux');
-    const idN = parseInt(req.params.id);
-    const niveau = niveaux.find(n => n.id === idN);
-    if (!niveau) {
-        return res.status(404).json({ message: 'Niveau non trouvé' });
-    }
-    res.status(200).json(niveau);
-}
+// GET ALL, GET BY ID
+const { getAll, getById, delete: remove } = baseController('niveaux');
 
 // CREATE
 const createNiveau = (req, res) => {
@@ -54,26 +41,11 @@ const updateNiveau = (req, res) => {
     res.status(200).json(niveaux[index]);
 }
 
-// DELETE
-const deleteNiveau = (req, res) => {
-    const niveaux = readTable('niveaux');
-    const id = parseInt(req.params.id);
-    const index = niveaux.findIndex(n => n.id === id);
-    if (index === -1) {
-        return res.status(404).json({ message: 'Niveau non trouvé' });
-    }
-    const removedNiveau = niveaux.splice(index, 1);
-    writeTable('niveaux', niveaux);
-    res.status(200).json({
-        message: 'Niveau supprimé',
-        niveau: removedNiveau
-    })
-}
 
 export default {
-    getAllNiveaux,
-    getNiveauById,
+    getAllNiveaux: getAll,
+    getNiveauById: getById,
     createNiveau,
     updateNiveau,
-    deleteNiveau
+    deleteNiveau: remove
 }
