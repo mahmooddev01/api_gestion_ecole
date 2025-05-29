@@ -38,3 +38,19 @@ export const generateId = (tableName) => {
     const data = readTable(tableName);
     return data.length > 0 ? Math.max(...data.map(item => item.id)) + 1 : 1;
 };
+
+export const getSingularName = (tableName) => {
+    const exceptions = {
+        cours: 'Cours',
+        travaux: 'Travail',
+        niveaux: 'Niveau'
+        // ajoute d'autres exceptions si nécessaire
+    };
+
+    if (exceptions[tableName]) {
+        return exceptions[tableName];
+    }
+
+    const singular = tableName.slice(0, -1);
+    return singular.charAt(0).toUpperCase() + singular.slice(1);
+}
