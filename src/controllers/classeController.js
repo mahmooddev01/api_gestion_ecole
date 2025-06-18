@@ -11,13 +11,16 @@ const createClasse = (req, res) => {
         const { libelle, niveauId, filiereId } = req.body;
         // Vérification de la validité des champs et de leur existence
         const result = validateAndCheckForeignKeys(req.body,
-            ["libelle", "niveauId", "filiereId"],
+            ["libelle", "filiereId", "niveauId"],
             [
                 { table: 'filieres', id: filiereId, label: 'Filière' },
                 { table: 'niveaux', id: niveauId, label: 'Niveau' }
             ]
         );
-
+        // Bloquer si invalide
+        if(!result.valid) {
+            return res.status(400).json({ message: result.message });
+        }
         const classes = readTable('classes');
         const id = generateId('classes');
 
@@ -45,13 +48,16 @@ const updateClasse = (req, res) => {
     const { libelle, niveauId, filiereId } = req.body;
     // Vérification de la validité des champs et de leur existence
     const result = validateAndCheckForeignKeys(req.body,
-        ["libelle", "niveauId", "filiereId"],
+        ["libelle", "filiereId", "niveauId"],
         [
             { table: 'filieres', id: filiereId, label: 'Filière' },
             { table: 'niveaux', id: niveauId, label: 'Niveau' }
         ]
     );
-
+    // Bloquer si invalide
+    if(!result.valid) {
+        return res.status(400).json({ message: result.message });
+    }
     classes[index] = {id, libelle, niveauId, filiereId};
     writeTable('classes', classes);
     res.status(200).json(classes[index]);

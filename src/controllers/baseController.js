@@ -1,5 +1,4 @@
 import {getSingularName, readTable, writeTable} from "../utils/helpers.js";
-import {request, response} from "express";
 
 export function baseController(tableName) {
     return {

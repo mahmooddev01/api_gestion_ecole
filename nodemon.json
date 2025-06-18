@@ -1,5 +1,5 @@
 {
-  "watch": ["controllers", "routes", "tests", "app.js"],
+  "watch": ["src/controllers", "src/routes", "src/tests", "app.js", "swagger.js"],
   "ext": "js,json,http",
   "ignore": ["data/db.json"],
   "exec": "node app.js"

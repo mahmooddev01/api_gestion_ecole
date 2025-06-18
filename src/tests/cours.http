@@ -13,7 +13,7 @@ Content-Type: application/json
 {
   "dateCours": "2024-08-17 10:00",
   "duree": 180,
-  "moduleId": 2,
+  "moduleId": 1,
   "classeId": 2
 }
 
@@ -25,7 +25,7 @@ Content-Type: application/json
   "dateCours": "2024-08-17 10:00",
   "duree": 180,
   "moduleId": 3,
-  "classeId": 3
+  "classeId": 2
 }
 
 ### Supprimer un cours

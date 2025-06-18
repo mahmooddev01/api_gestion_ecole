@@ -18,7 +18,18 @@ const createEtudiant = (req, res) => {
                 ]
         )
 
+        if (!result.valid) {
+            return res.status(400).json({ message: result.message });
+        }
+
         const etudiants = readTable('etudiants');
+
+        // Vérifier doublons matricule ou login
+        const doublon = etudiants.find(e => e.matricule === matricule || e.login === login);
+        if (doublon) {
+            return res.status(400).json({ message: "Matricule ou login déjà utilisé." });
+        }
+
         const id = etudiants.length > 0 ? Math.max(...etudiants.map(etu => etu.id)) + 1 : 1;
 
         const newEtudiant = {id, nomComplet, matricule, adresse, login, password, classeId};
@@ -50,6 +61,18 @@ const updateEtudiant = (req, res) => {
             { table: 'classes', id: classeId, label: 'Classe' }
             ]
     )
+
+    if (!result.valid) {
+        return res.status(400).json({ message: result.message });
+    }
+
+    // 🔒 Vérifie qu'aucun autre étudiant n'a ce matricule ou login
+    const doublon = etudiants.find(e =>
+        e.id !== id && (e.matricule === matricule || e.login === login)
+    );
+    if (doublon) {
+        return res.status(400).json({ message: "Matricule ou login déjà utilisé par un autre étudiant." });
+    }
 
     etudiants[index] = {id, nomComplet, matricule, adresse, login, password, classeId};
     writeTable('etudiants', etudiants);

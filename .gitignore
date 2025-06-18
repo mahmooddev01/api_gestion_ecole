@@ -13,3 +13,5 @@ Thumbs.db
 
 # Autres fichiers sensibles
 .env
+
+src/config/
