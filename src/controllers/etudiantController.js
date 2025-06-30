@@ -1,82 +1,103 @@
-import {readTable, writeTable} from "../utils/helpers.js";
-import {validateAndCheckForeignKeys} from "../utils/validator.js";
+import {checkForeignKeysExist, validatePayload} from "../utils/validator.js";
 import {baseController} from "./baseController.js";
+import pool from "../config/db.js";
 
 
 // GET ALL, GET BY ID, DELETE
 const { getAll, getById, delete: remove } = baseController('etudiants');
 
 // CREATE
-const createEtudiant = (req, res) => {
+const createEtudiant = async (req, res) => {
     try {
         const { nomComplet, matricule, adresse, login, password, classeId } = req.body;
-
-        const result = validateAndCheckForeignKeys(req.body,
-            ["nomComplet", "matricule", "adresse", "login", "password", "classeId"],
-            [
-                { table: 'classes', id: classeId, label: 'Classe' }
-                ]
-        )
-
+        // Validation des champs obligatoire
+        const result = validatePayload(req.body,["nomComplet", "matricule", "adresse", "login", "password", "classeId"])
+        // BLoquer si invalide
         if (!result.valid) {
             return res.status(400).json({ message: result.message });
         }
 
-        const etudiants = readTable('etudiants');
-
-        // Vérifier doublons matricule ou login
-        const doublon = etudiants.find(e => e.matricule === matricule || e.login === login);
-        if (doublon) {
-            return res.status(400).json({ message: "Matricule ou login déjà utilisé." });
+        // Vérification des clés étrangères
+        const checkFkeys = await checkForeignKeysExist([
+            { table: "classes", id: classeId, label: "Classe" }
+        ])
+        if (!checkFkeys.valid) {
+            return res.status(400).json({ message: checkFkeys.message });
         }
 
-        const id = etudiants.length > 0 ? Math.max(...etudiants.map(etu => etu.id)) + 1 : 1;
+        const values = [nomComplet, matricule, adresse, login, password, classeId];
+        // Vérification de doublon
+        const doublonCheck = `
+            SELECT * FROM etudiants
+            WHERE matricule = $1 OR login = $2
+        `;
+        const alreadyExists = await pool.query(doublonCheck, [matricule, login]);
+        if (alreadyExists.rows.length > 0) {
+            return res.status(400).json({ message: "Login ou matricule déjà utilisé" });
+        }
 
-        const newEtudiant = {id, nomComplet, matricule, adresse, login, password, classeId};
-        etudiants.push(newEtudiant);
-        writeTable('etudiants', etudiants);
+        // Insertion dans la BD
+        const insertQuery = `
+            INSERT INTO etudiants (nomComplet, matricule, adresse, login, password, classeId)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *
+        `;
+        const {rows} = await pool.query(insertQuery, values);
 
-        res.status(200).json(newEtudiant);
+        res.status(201).json(rows[0]);
     } catch (e) {
-        console.error("Erreur creation etudiant :", e);
         res.status(500).json({message: 'Erreur serveur'});
     }
 }
 
 // UPDATE
-const updateEtudiant = (req, res) => {
-    const etudiants = readTable('etudiants');
+const updateEtudiant = async (req, res) => {
     const id = parseInt(req.params.id);
-    const index = etudiants.findIndex(etu => etu.id === id);
-
-    if (index === -1) {
-        return res.status(400).json({message: 'Etudiant non trouvé'});
-    }
-
     const {nomComplet, matricule, adresse, login, password, classeId} = req.body;
-
-    const result = validateAndCheckForeignKeys(req.body,
-        ["nomComplet", "matricule", "adresse", "login", "password", "classeId"],
-        [
-            { table: 'classes', id: classeId, label: 'Classe' }
-            ]
-    )
+    // Validation des champs requis
+    const result = validatePayload(req.body,["nomComplet", "matricule", "adresse", "login", "password", "classeId"] )
 
     if (!result.valid) {
         return res.status(400).json({ message: result.message });
     }
 
-    // 🔒 Vérifie qu'aucun autre étudiant n'a ce matricule ou login
-    const doublon = etudiants.find(e =>
-        e.id !== id && (e.matricule === matricule || e.login === login)
-    );
-    if (doublon) {
-        return res.status(400).json({ message: "Matricule ou login déjà utilisé par un autre étudiant." });
-    }
+    try {
+        // Vérification des clés étrangères
+        const checkFkeys = await checkForeignKeysExist([
+            { table: "classes", id: classeId, label: "Classe" }
+        ]);
+        if (!checkFkeys.valid) {
+            return res.status(400).json({ message: checkFkeys.message });
+        }
 
-    etudiants[index] = {id, nomComplet, matricule, adresse, login, password, classeId};
-    writeTable('etudiants', etudiants);
-    res.status(200).json(etudiants[index]);
+        // Vérification du doublon
+        const doublonCheck = `
+            SELECT * FROM etudiants
+            WHERE (matricule = $1 OR login = $2) AND id != $3
+        `;
+        const alreadyExists = await pool.query(doublonCheck, [matricule, login, id]);
+        if (alreadyExists.rows.length > 0) {
+            return res.status(400).json({ message: "Login ou matricule déjà utilisé" });
+        }
+
+        // Mise à jour
+        const updateQuery = `
+            UPDATE etudiants
+            SET nomComplet = $1, matricule = $2, adresse = $3, login = $4, password = $5, classeId = $6
+            WHERE id = $7
+            RETURNING *
+        `;
+        const values = [nomComplet, matricule, adresse, login, password, classeId, id];
+        const resultUpdate = await pool.query(updateQuery, values);
+
+        if (resultUpdate.rowCount === 0) {
+            return res.status(404).json({ message: "Etudiant non trouvé" });
+        }
+
+        res.status(200).json(resultUpdate.rows[0]);
+    } catch (e) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
 }
 
 

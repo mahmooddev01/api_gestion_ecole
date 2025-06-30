@@ -1,4 +1,4 @@
-import {readTable} from "./helpers.js";
+import pool from "../config/db.js";
 
 // Vérifier si le payload est valide
 export const validatePayload = (body, requiredFields = []) => {
@@ -14,11 +14,11 @@ export const validatePayload = (body, requiredFields = []) => {
 };
 
 // Vérifier si les clés étrangères sont valides
-export const checkForeignKeysExist = (foreignKeys = []) => {
+export const checkForeignKeysExist = async (foreignKeys = []) => {
     for (const { table, id, label } of foreignKeys) {
-        const data = readTable(table);
-        const exists = data.some(item => item.id === id);
-        if (!exists) {
+        const query = `SELECT * FROM ${table} WHERE id = $1 LIMIT 1`;
+        const result = await pool.query(query, [id]);
+        if (result.rows.length === 0) {
             return {
                 valid: false,
                 message: `${label || table} inexistant(e)`,
@@ -28,11 +28,11 @@ export const checkForeignKeysExist = (foreignKeys = []) => {
     return { valid: true };
 };
 
-export const validateAndCheckForeignKeys = (body, requiredFields, foreignKeys) => {
+export const validateAndCheckForeignKeys = async (body, requiredFields, foreignKeys) => {
     const result = validatePayload(body, requiredFields);
     if (!result.valid) return result;
 
-    const keysResult = checkForeignKeysExist(foreignKeys);
+    const keysResult = await checkForeignKeysExist(foreignKeys);
     if (!keysResult.valid) return keysResult;
 
     return { valid: true };

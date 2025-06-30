@@ -1,21 +1,21 @@
 ### Afficher tous les modules
-GET http://localhost:8080/api/modules
+GET http://localhost:4000/api/modules
 Accept: application/json
 
 ### Afficher un module par ID
-GET http://localhost:8080/api/modules/1
+GET http://localhost:4000/api/modules/1
 Accept: application/json
 
 ### Ajouter un module
-POST http://localhost:8080/api/modules
+POST http://localhost:4000/api/modules
 Content-Type: application/json
 
 {
-  "libelle": "Python"
+  "libelle": "SQL"
 }
 
 ### Modifier un module existant
-PUT http://localhost:8080/api/modules/6
+PUT http://localhost:4000/api/modules/2
 Content-Type: application/json
 
 {
@@ -23,5 +23,5 @@ Content-Type: application/json
 }
 
 ### Supprimer un module existant
-DELETE http://localhost:8080/api/modules/6
+DELETE http://localhost:4000/api/modules/
 Accept: application/json

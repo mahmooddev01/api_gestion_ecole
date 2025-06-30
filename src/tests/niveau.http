@@ -1,27 +1,27 @@
 ### Afficher tous les niveaux
-GET http://localhost:8080/api/niveaux
+GET http://localhost:4000/api/niveaux
 Accept: application/json
 
 ### Afficher un niveau par ID
-GET http://localhost:8080/api/niveaux/1
+GET http://localhost:4000/api/niveaux/1
 Accept: application/json
 
 ### Ajouter un niveau
-POST http://localhost:8080/api/niveaux
+POST http://localhost:4000/api/niveaux
 Content-Type: application/json
 
 {
-  "libelle": "M1"
+  "libelle": "L2"
 }
 
 ### Modifier un niveau existant
-PUT http://localhost:8080/api/niveaux/4
+PUT http://localhost:4000/api/niveaux/3
 Content-Type: application/json
 
 {
-  "libelle": "M2"
+  "libelle": "L3"
 }
 
 ### Supprimer un niveau existant
-DELETE http://localhost:8080/api/niveaux/4
+DELETE http://localhost:4000/api/niveaux/3
 Accept: application/json

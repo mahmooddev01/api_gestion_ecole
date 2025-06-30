@@ -1,8 +1,9 @@
 # Ignorer les dépendances Node.js
 node_modules/
 
-# Ignorer les fichiers de config WebStorm
+# Ignorer les fichiers de config IDE
 .idea/
+.vscode/
 
 # Ignorer les fichiers système
 .DS_Store
@@ -11,7 +12,10 @@ Thumbs.db
 # Logs
 *.log
 
-# Autres fichiers sensibles
+# Fichiers d'environnement et secrets
 .env
+.env.local
+.env.development
 
-src/config/
+# Ancienne base JSON locale
+src/data/

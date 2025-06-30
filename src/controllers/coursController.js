@@ -1,94 +1,117 @@
-import {generateId, readTable, writeTable} from "../utils/helpers.js";
-import {validateAndCheckForeignKeys} from "../utils/validator.js";
+import {checkForeignKeysExist, validatePayload} from "../utils/validator.js";
 import {baseController} from "./baseController.js";
+import pool from "../config/db.js";
 
 // GET ALL, GET BY ID, DELETE
 const { getAll, getById, delete: remove } = baseController('cours');
 
 // CREATE
-const createCours = (req, res) => {
+const createCours = async (req, res) => {
     try {
         let { dateCours, duree, classeId, moduleId } = req.body;
 
-        const result = validateAndCheckForeignKeys(req.body,
-            ["dateCours", "duree", "classeId", "moduleId"],
-            [
-                { table: 'classes', id: classeId, label: 'Classe' },
-                { table: 'modules', id: moduleId, label: 'Module' }
-                ]
-        )
+        // Validation des champs obligatoire
+        const result = validatePayload(req.body,["dateCours", "duree", "classeId", "moduleId"])
         // Bloquer si invalide
         if(!result.valid) {
             return res.status(400).json({ message: result.message });
         }
 
-        const cours = readTable('cours');
-        // Formatage de la date
-        dateCours = new Date(dateCours).toISOString();
+        // Vérification des clés étrangères
+        const checkFkeys = await checkForeignKeysExist([
+            { table: "classes", id: classeId, label: "Classe" },
+            { table: "modules", id: moduleId, label: "Module" },
+        ]);
+        if(!checkFkeys.valid) {
+            return res.status(400).json({ message: checkFkeys.message });
+        }
 
         // Vérification du doublon
-        const alreadyExists = cours.some(c =>
-            c.dateCours === dateCours &&
-            c.classeId === classeId &&
-            c.moduleId === moduleId
-        );
+        const doublonCheck = `
+            SELECT * FROM cours
+            WHERE dateCours = $1 AND duree = $2 AND classeId = $3 AND moduleId = $4`;
+        const alreadyExists = await pool.query(doublonCheck, [dateCours, duree, classeId, moduleId]);
 
-        if (alreadyExists) {
+        if (alreadyExists.rows.length > 0) {
             return res.status(400).json({ message: "Ce cours existe déjà pour cette classe, ce module et cette date." });
         }
 
-        const id = generateId('cours');
-        const newCours = { id, dateCours, duree, classeId, moduleId };
-        cours.push(newCours);
-        writeTable('cours', cours);
+        // Formatage de la date
+        const f_dateCours = new Date(dateCours);
+        if (isNaN(f_dateCours)) {
+            return res.status(400).json({ message: "Date invalide" });
+        }
 
-        res.status(200).json(newCours);
+        // Insertion dans la BD
+        const insertQuery = `
+            INSERT INTO cours (dateCours, duree, classeId, moduleId)
+            VALUES ($1, $2, $3, $4)
+            RETURNING *`;
+        const values = [f_dateCours.toISOString(), duree, classeId, moduleId]
+        const {rows} = await pool.query(insertQuery, values);
+
+        res.status(201).json(rows[0])
     } catch (e) {
-        console.log("Erreur creation cours", e);
         res.status(500).json({message: 'Erreur serveur'});
     }
 }
 
 // UPDATE
-const updateCours = (req, res) => {
-    const cours = readTable('cours');
+const updateCours = async (req, res) => {
     const id = parseInt(req.params.id);
-    const index = cours.findIndex(c => c.id === id);
-
-    if (index === -1) {
-        return res.status(400).json({message: 'Cours non trouvé'});
-    }
-
     let { dateCours, duree, classeId, moduleId } = req.body;
-    const result = validateAndCheckForeignKeys(req.body,
-        ["dateCours", "duree", "classeId", "moduleId"],
-        [
-            { table: 'classes', id: classeId, label: 'Classe' },
-            { table: 'modules', id: moduleId, label: 'Module' }
-            ]
-    )
+
+    // Vérification des champs requis
+    const result = validatePayload(req.body,["dateCours", "duree", "classeId", "moduleId"])
 
     if (!result.valid) {
         return res.status(400).json({ message: result.message });
     }
 
-    dateCours = new Date(dateCours).toISOString();
+    try {
+        // Vérification des clés étrangères
+        const checkFkeys = await checkForeignKeysExist([
+            { table: "classes", id: classeId, label: "Classe" },
+            { table: "modules", id: moduleId, label: "Module" },
+        ])
+        if(!checkFkeys.valid) {
+            return res.status(400).json({ message: checkFkeys.message });
+        }
 
-    // Vérifie que le cours n'est pas un doublon d'un autre cours (sauf lui-même)
-    const alreadyExists = cours.some(c =>
-        c.id !== id &&
-        c.dateCours === dateCours &&
-        c.classeId === classeId &&
-        c.moduleId === moduleId
-    );
+        // Vérification de doublon
+        const doublonCheck = `
+            SELECT * FROM cours
+            WHERE dateCours = $1 AND duree = $2  AND classeId = $3 AND moduleId = $4 AND id != $5
+        `;
+        const doublonResult = await pool.query(doublonCheck, [dateCours, duree, classeId, moduleId, id]);
+        if (doublonResult.rowCount > 0) {
+            return res.status(400).json({ message: "Un autre cours existe déjà avec cette combinaison date / classe / module." });
+        }
 
-    if (alreadyExists) {
-        return res.status(400).json({ message: "Un autre cours existe déjà avec cette combinaison date / classe / module." });
+        // Formatage de la date
+        const f_dateCours = new Date(dateCours);
+        if (isNaN(f_dateCours)) {
+            return res.status(400).json({ message: "Date invalide" });
+        }
+
+        // Mise à jour
+        const updateQuery = `
+            UPDATE cours
+            SET dateCours = $1, duree = $2, classeId = $3, moduleId = $4
+            WHERE id = $5
+            RETURNING *
+        `;
+        const values = [f_dateCours.toISOString(), duree, classeId, moduleId, id];
+        const resultUpdate = await pool.query(updateQuery, values);
+
+        if(resultUpdate.rowCount === 0) {
+            return res.status(404).json({ message: "Cours non trouvé" });
+        }
+
+        res.status(200).json(result.rows[0])
+    } catch (e) {
+        res.status(500).json({message: 'Erreur serveur'});
     }
-
-    cours[index] = {id, dateCours, duree, classeId, moduleId};
-    writeTable('cours', cours);
-    res.status(200).json(cours[index]);
 }
 
 

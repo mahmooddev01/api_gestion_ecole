@@ -5,42 +5,49 @@ Cette API a pour objectif de gérer les différentes entités académiques d'un 
 
 ## ✅ Fonctionnalités déjà implémentées
 
-### 🔹 Classes
-- [x] Liste de toutes les classes
-- [x] Afficher une classe par ID
-- [x] Ajouter une classe
+### 📘 Classes
+- [x] Lister toutes les classes
+- [x] Obtenir une classe par ID
+- [x] Ajouter une classe (avec vérification de doublon et des clés étrangères)
 - [x] Modifier une classe
 - [x] Supprimer une classe
 
-### 🔹 Filières
-- [x] Liste des filières
-- [x] Ajouter, modifier et supprimer une filière
+### 🧩 Filières
+- [x] CRUD complet
 
-### 🔹 Niveaux
-- [x] Liste des niveaux
-- [x] Ajouter, modifier et supprimer un niveau
+### 🧱 Niveaux
+- [x] CRUD complet
 
-### 🔹 Modules
-- [x] Liste des modules
-- [x] Ajouter, modifier et supprimer un module
+### 📚 Modules
+- [x] CRUD complet (avec détection de doublons)
 
-### 🔹 Etudiants
+### 👨‍🎓 Étudiants
+- [x] Ajouter un étudiant avec vérification FK + doublon (matricule/login)
+- [x] Modifier un étudiant
+- [x] Supprimer un étudiant
 - [x] Lister tous les étudiants
-- [x] Ajouter, modifier et supprimer un étudiant
 
-### 🔹 Cours
-- [x] Lister tous les cours
-- [x] Ajouter, modifier et supprimer un cours
+### 📅 Cours
+- [x] CRUD complet avec validation de la date et des clés étrangères
+- [x] Vérification de l’unicité d’un cours (classe/module/date)
 
 ---
 
 ## 🛠️ Technologies utilisées
 
-- Node.js
-- Express
-- ES Modules
-- JSON File (via `fs`) pour simuler une base de données
-- Nodemon (en développement)
+- **Node.js**
+- **Express**
+- **ES Modules**
+- **PostgreSQL** via `pg`
+- **Nodemon** pour le développement
+
+---
+
+## 🧠 Logique de validation
+
+- 🔒 `validatePayload`: vérifie que tous les champs requis sont présents
+- 🔗 `checkForeignKeysExist`: valide l’existence des relations (`classeId`, `moduleId`, etc.)
+- ⚠️ Vérification de **doublons** avant insert ou update
 
 ---
 
@@ -50,10 +57,12 @@ Cette API a pour objectif de gérer les différentes entités académiques d'un 
 .
 ├── app.js
 ├── /src
-│   ├── controllers/   # Logique métier pour chaque entité
-│   ├── routes/        # Définition des routes Express
-│   ├── utils/         # Fonctions utilitaires (lecture/écriture DB)
-│   └── data/db.json   # Base de données locale
+│   ├── config/             # Connexion à la base de données PostgreSQL
+│   ├── controllers/        # Logique métier (par entité)
+│   ├── routes/             # Définition des endpoints Express
+│   ├── utils/              # Fonctions génériques : validations, helpers
+│   └── baseController.js   # Générateur CRUD dynamique
+├── swagger.js              # Configuration Swagger
 ```
 
 ---
@@ -66,7 +75,7 @@ npm start   # ou npx nodemon app.js
 ```
 
 Le serveur sera accessible à l’adresse :  
-📍 `http://localhost:8080`
+📍 `http://localhost:4000`
 
 ---
 
@@ -75,7 +84,7 @@ Le serveur sera accessible à l’adresse :
 ### ▶️ Ajouter une classe
 
 ```http
-POST http://localhost:8080/api/classes
+POST /api/classes
 Content-Type: application/json
 
 {
@@ -88,7 +97,7 @@ Content-Type: application/json
 ### 🔄 Modifier une classe
 
 ```http
-PUT http://localhost:8080/api/classes/4
+PUT /api/classes/4
 Content-Type: application/json
 
 {

@@ -10,7 +10,7 @@ import etudiantRoutes from "./src/routes/etudiantRoutes.js";
 import coursRoutes from "./src/routes/coursRoutes.js";
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 4000;
 
 app.use(express.json());
 

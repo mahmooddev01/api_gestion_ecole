@@ -1,33 +1,33 @@
 ### Afficher tous les cours
-GET http://localhost:8080/api/cours
+GET http://localhost:4000/api/cours
 Accept: application/json
 
 ### Afficher un cours par ID
-GET http://localhost:8080/api/cours/1
+GET http://localhost:4000/api/cours/1
 Accept: application/json
 
 ### Ajouter un cours
-POST http://localhost:8080/api/cours
+POST http://localhost:4000/api/cours
 Content-Type: application/json
 
 {
   "dateCours": "2024-08-17 10:00",
   "duree": 180,
-  "moduleId": 1,
-  "classeId": 2
+  "classeId": 1,
+  "moduleId": 1
 }
 
 ### Mettre à jour un cours
-PUT http://localhost:8080/api/cours/3
+PUT http://localhost:4000/api/cours/5
 Content-Type: application/json
 
 {
   "dateCours": "2024-08-17 10:00",
   "duree": 180,
-  "moduleId": 3,
-  "classeId": 2
+  "classeId": 1,
+  "moduleId": 1
 }
 
 ### Supprimer un cours
-DELETE http://localhost:8080/api/cours/3
+DELETE http://localhost:4000/api/cours/3
 Accept: application/json

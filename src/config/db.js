@@ -1,8 +1,12 @@
-import mysql2 from 'mysql2';
+import pg from 'pg';
+const { Pool } = pg;
 
-const pool = mysql2.createPool({
+const pool = new Pool({
+    user: 'postgres',
     host: 'localhost',
-    user: 'root',
+    database: 'ApiGestionEcole',
     password: 'root',
-    database: 'root',
-})
+    port: 5432,
+});
+
+export default pool;

@@ -1,31 +1,31 @@
 ### Afficher toutes les classes
-GET http://localhost:8080/api/classes
+GET http://localhost:4000/api/classes
 Accept: application/json
 
 ### Afficher une classe par ID
-GET http://localhost:8080/api/classes/1
+GET http://localhost:4000/api/classes/1
 Accept: application/json
 
 ### Ajouter une classe
-POST http://localhost:8080/api/classes
+POST http://localhost:4000/api/classes
 Content-Type: application/json
 
 {
   "libelle": "L2 DWM",
   "filiereId": 1,
-  "niveauId": 2
+  "niveauId": 5
 }
 
 ### Mettre à jour une classe existante
-PUT http://localhost:8080/api/classes/3
+PUT http://localhost:4000/api/classes/2
 Content-Type: application/json
 
 {
-    "libelle": "L1 DN",
-    "filiereId": 3,
+    "libelle": "L1 DWM",
+    "filiereId": 1,
     "niveauId": 1
 }
 
 ### Supprimer une classe existante
-DELETE http://localhost:8080/api/classes/3
+DELETE http://localhost:4000/api/classes/2
 Accept: application/json

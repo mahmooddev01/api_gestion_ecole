@@ -1,21 +1,21 @@
 ### Afficher toutes les filieres
-GET http://localhost:8080/api/filieres
+GET http://localhost:4000/api/filieres
 Accept: application/json
 
 ### Afficher une filiere par ID
-GET http://localhost:8080/api/filieres/2
+GET http://localhost:4000/api/filieres/2
 Accept: application/json
 
 ### Ajouter une filiere
-POST http://localhost:8080/api/filieres
+POST http://localhost:4000/api/filieres
 Content-Type: application/json
 
 {
-  "libelle": "DN"
+  "libelle": "MD"
 }
 
 ### Modifier une filiere existante
-PUT http://localhost:8080/api/filieres/4
+PUT http://localhost:4000/api/filieres/5
 Content-Type: application/json
 
 {
@@ -23,5 +23,5 @@ Content-Type: application/json
 }
 
 ### Supprimer une filiere existante
-DELETE http://localhost:8080/api/filieres/4
+DELETE http://localhost:4000/api/filieres/5
 Accept: application/json

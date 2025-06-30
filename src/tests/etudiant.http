@@ -1,18 +1,18 @@
 ### Afficher tous les etudiants
-GET http://localhost:8080/api/etudiants
+GET http://localhost:4000/api/etudiants
 Accept: application/json
 
 ### Afficher un etudiant par ID
-GET http://localhost:8080/api/etudiants/1
+GET http://localhost:4000/api/etudiants/1
 Accept: application/json
 
 ### Ajouter un etudiant
-POST http://localhost:8080/api/etudiants
+POST http://localhost:4000/api/etudiants
 Content-Type: application/json
 
 {
   "nomComplet": "Amadou BA",
-  "matricule": "ETU004",
+  "matricule": "ETU001",
   "adresse": "Médina",
   "login": "amdoux@gmail.com",
   "password": "passer123",
@@ -20,18 +20,18 @@ Content-Type: application/json
 }
 
 ### Modifier les infos d'un etudiant
-PUT http://localhost:8080/api/etudiants/4
+PUT http://localhost:4000/api/etudiants/1
 Content-Type: application/json
 
 {
   "nomComplet": "Amadou BA",
-  "matricule": "ETU004",
+  "matricule": "ETU001",
   "adresse": "Keur Massar",
   "login": "amdoux@gmail.com",
   "password": "passer123",
-  "classeId": 2
+  "classeId": 1
 }
 
 ### Supprimer un etudiant
-DELETE http://localhost:8080/api/etudiants/4
+DELETE http://localhost:4000/api/etudiants/4
 Accept: application/json
